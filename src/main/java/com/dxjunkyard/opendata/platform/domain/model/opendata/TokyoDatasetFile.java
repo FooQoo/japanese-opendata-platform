@@ -8,6 +8,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Builder
@@ -19,7 +20,7 @@ public class TokyoDatasetFile implements DatasetFile {
     private final String description;
     @NonNull
     private final String format;
-    @NonNull
+    @Nullable
     private final LocalDateTime lastModified;
     @NonNull
     private final String url;
@@ -49,8 +50,11 @@ public class TokyoDatasetFile implements DatasetFile {
     }
 
     @Override
+    @Nullable
     public Long getLastModifiedTimestamp() {
-        return lastModified.toEpochSecond(java.time.ZoneOffset.of("+09:00"));
+        return Optional.ofNullable(lastModified)
+            .map(timestamp -> timestamp.toEpochSecond(java.time.ZoneOffset.of("+09:00")))
+            .orElse(null);
     }
 
     @Override

@@ -97,7 +97,9 @@ public record TokyoOpenDataSearchResponse(
                 .title(name)
                 .description(description)
                 .format(format)
-                .lastModified(LocalDateTime.parse(lastModified, DateTimeFormatter.ISO_DATE_TIME))
+                .lastModified(Optional.ofNullable(lastModified)
+                    .map(datetime -> LocalDateTime.parse(datetime, DateTimeFormatter.ISO_DATE_TIME))
+                    .orElse(null))
                 .url(url)
                 .build();
         }

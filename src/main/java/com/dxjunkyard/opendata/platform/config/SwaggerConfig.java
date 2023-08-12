@@ -77,7 +77,7 @@ public class SwaggerConfig {
                         case "organization" ->
                             parameter.setDescription(parameter.getDescription() + " Options of Organization are " + StringUtils.join(organizationNameList, ",") + ".");
                         case "category" ->
-                            parameter.setDescription(parameter.getDescription() + " Options of Category are " + StringUtils.join(categoryNameList, ",") + ".");
+                            parameter.setDescription(parameter.getDescription() + " Select one of the following options. e.g. " + StringUtils.join(categoryNameList, ",") + ".");
                         case "format" ->
                             parameter.setDescription(parameter.getDescription() + " Option of Format are " + StringUtils.join(OpenDataFormat.getValues(), ",") + ".");
                     }

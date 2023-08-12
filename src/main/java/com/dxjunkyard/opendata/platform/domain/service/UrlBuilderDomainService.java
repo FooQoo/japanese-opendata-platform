@@ -43,8 +43,8 @@ public class UrlBuilderDomainService {
 
         searchCondition.getFormatSet()
             .forEach(format -> {
-                map.put("format", format.name());
-                builder.queryParam("format", "{format}");
+                map.put("res_format_" + format.getValue(), format.getValue());
+                builder.queryParam("res_format", "{res_format_" + format.getValue() + "}");
             });
 
         return builder.build(map).toString();

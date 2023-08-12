@@ -86,7 +86,7 @@ public class SearchCondition {
         }
 
         return String.join(" ", formatSet.stream()
-            .map(OpenDataFormat::name)
+            .map(OpenDataFormat::getValue)
             .collect(Collectors.toUnmodifiableSet()));
     }
 }

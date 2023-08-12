@@ -27,11 +27,11 @@ public record TokyoOpenDataSearchRequest(
 
         final String groups = searchCondition.getCategoryIdSet().stream()
             .map(categoryId -> "groups:" + categoryId.toString())
-            .collect(Collectors.joining(" OR "));
+            .collect(Collectors.joining(" AND "));
 
         final String resFormat = searchCondition.getFormatSet().stream()
             .map(openDataFormat -> "res_format:" + openDataFormat.toString())
-            .collect(Collectors.joining(" OR "));
+            .collect(Collectors.joining(" AND "));
 
         final String q = Stream.of(
                 Optional.ofNullable(searchKeyword).filter(StringUtils::isNotBlank)

@@ -19,7 +19,7 @@ public record OpenDataSearcherRequest(
     @Nullable
     String keyword,
 
-    @Parameter(description = "Search organization. If you want to search for multiple organizations, separate them with spaces.")
+    @Parameter(description = "Search organization.")
     @Nullable
     String organization,
 
@@ -38,8 +38,7 @@ public record OpenDataSearcherRequest(
             return Set.of();
         }
 
-        return Stream.of(organization.split(StringUtils.SPACE))
-            .collect(Collectors.toUnmodifiableSet());
+        return Set.of(organization);
     }
 
     @NonNull
@@ -59,7 +58,7 @@ public record OpenDataSearcherRequest(
         }
 
         return Stream.of(format.split(StringUtils.SPACE))
-            .map(OpenDataFormat::valueOf)
+            .map(OpenDataFormat::fromString)
             .collect(Collectors.toUnmodifiableSet());
     }
 }
