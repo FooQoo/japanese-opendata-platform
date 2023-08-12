@@ -37,12 +37,15 @@ public class SwaggerConfig {
     @NotNull
     private final String description;
 
+    @NotNull
+    private final String host;
+
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
             .servers(List.of(
                 new Server()
-                    .url("http://localhost:8080")))
+                    .url(host)))
             .info(new Info()
                 .title(title)
                 .version(version)

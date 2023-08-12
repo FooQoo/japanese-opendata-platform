@@ -16,12 +16,14 @@ spring:
     group:
       local:
         - doc
+        - doc-local
         - devtools
         - open-data-tokyo
         - ai-plugin
         - ai-plugin-local
       prod:
         - doc
+        - doc-prod
         - open-data-tokyo
         - ai-plugin
         - ai-plugin-prod
