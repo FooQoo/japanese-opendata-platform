@@ -34,8 +34,10 @@ public class TokyoOpenDataRepositoryConfig {
     @Bean
     public WebClient tokyoOpenDataClient(final WebClient.Builder builder) {
         return builder.baseUrl(url)
+            .exchangeStrategies(WebClientConfig.exchangeStrategies())
             .filter(WebClientConfig.logRequest())
             .filter(WebClientConfig.logResponse())
+
             .build();
     }
 }

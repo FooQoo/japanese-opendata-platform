@@ -34,13 +34,16 @@ public record TokyoOpenDataSearchRequest(
             .collect(Collectors.joining(" OR "));
 
         final String q = Stream.of(
-                searchKeyword,
-                organization,
-                groups,
-                resFormat
+                Optional.ofNullable(searchKeyword).filter(StringUtils::isNotBlank)
+                    .orElse(""),
+                Optional.of(organization).filter(StringUtils::isNotBlank)
+                    .map(value -> "(" + value + ")").orElse(""),
+                Optional.of(groups).filter(StringUtils::isNotBlank)
+                    .map(value -> "(" + value + ")").orElse(""),
+                Optional.of(resFormat).filter(StringUtils::isNotBlank)
+                    .map(value -> "(" + value + ")").orElse("")
             )
             .filter(StringUtils::isNotBlank)
-            .map(param -> "(" + param + ")")
             .collect(Collectors.joining(" AND ")
             );
 

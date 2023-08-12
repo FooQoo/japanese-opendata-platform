@@ -6,6 +6,7 @@ import com.dxjunkyard.opendata.platform.domain.model.opendata.OrganizationId;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -18,8 +19,8 @@ import java.util.stream.Collectors;
 @Builder
 public class SearchCondition {
 
-    @Nullable
-    private final String keyword;
+    @NonNull
+    private final Set<String> keywordSet;
 
     @NonNull
     private final Prefecture prefecture;
@@ -33,6 +34,10 @@ public class SearchCondition {
     @NonNull
     private final Set<OpenDataFormat> formatSet;
 
+    public boolean existsKeyword() {
+        return CollectionUtils.isNotEmpty(keywordSet);
+    }
+
     @NonNull
     public Set<OrganizationId> getOrganizationIdSet() {
         return Set.copyOf(organizationMap.values());
@@ -41,6 +46,16 @@ public class SearchCondition {
     @NonNull
     public Set<CategoryId> getCategoryIdSet() {
         return Set.copyOf(categoryMap.values());
+    }
+
+    @Nullable
+    public String getKeyword() {
+
+        if (CollectionUtils.isEmpty(keywordSet)) {
+            return null;
+        }
+
+        return String.join(" ", keywordSet);
     }
 
     @Nullable

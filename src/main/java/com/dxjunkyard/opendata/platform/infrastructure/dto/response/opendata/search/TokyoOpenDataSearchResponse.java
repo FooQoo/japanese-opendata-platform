@@ -1,6 +1,7 @@
 package com.dxjunkyard.opendata.platform.infrastructure.dto.response.opendata.search;
 
 import com.dxjunkyard.opendata.platform.domain.model.opendata.TokyoDataset;
+import com.dxjunkyard.opendata.platform.domain.model.opendata.TokyoDatasetFile;
 import com.dxjunkyard.opendata.platform.domain.model.opendata.TokyoOpenData;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -9,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,11 +74,7 @@ public record TokyoOpenDataSearchResponse(
                 .maintainer(maintainer)
                 .license(licenseTitle)
                 .files(resources.stream()
-                    .map(resource -> TokyoDataset.TokyoDatasetFile.builder()
-                        .title(resource.name())
-                        .format(resource.format())
-                        .url(resource.url())
-                        .build())
+                    .map(ResourceResponse::toDatasetFile)
                     .toList())
                 .build();
         }
@@ -93,6 +91,16 @@ public record TokyoOpenDataSearchResponse(
         String lastModified,
         String created
     ) {
+
+        public TokyoDatasetFile toDatasetFile() {
+            return TokyoDatasetFile.builder()
+                .title(name)
+                .description(description)
+                .format(format)
+                .lastModified(LocalDateTime.parse(lastModified, DateTimeFormatter.ISO_DATE_TIME))
+                .url(url)
+                .build();
+        }
     }
 
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)

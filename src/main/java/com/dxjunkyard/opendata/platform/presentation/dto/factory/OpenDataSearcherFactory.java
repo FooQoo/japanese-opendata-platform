@@ -9,11 +9,10 @@ import com.dxjunkyard.opendata.platform.domain.model.search.OrganizationNameToId
 import com.dxjunkyard.opendata.platform.domain.model.search.Prefecture;
 import com.dxjunkyard.opendata.platform.domain.model.search.SearchCondition;
 import com.dxjunkyard.opendata.platform.domain.repository.opendata.OpenDataRepository;
+import com.dxjunkyard.opendata.platform.domain.service.FilterDatasetFileDomainService;
 import com.dxjunkyard.opendata.platform.domain.service.UrlBuilderDomainService;
 import com.dxjunkyard.opendata.platform.presentation.dto.request.OpenDataSearcherRequest;
-import com.dxjunkyard.opendata.platform.presentation.dto.response.OpenDataSearcherResponse;
-import com.dxjunkyard.opendata.platform.presentation.dto.response.SearchConditionResponse;
-import com.dxjunkyard.opendata.platform.presentation.dto.response.SearchResultInfoResponse;
+import com.dxjunkyard.opendata.platform.presentation.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +22,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -33,6 +33,8 @@ public class OpenDataSearcherFactory {
     private final OpenDataRepository openDataRepository;
 
     private final UrlBuilderDomainService urlBuilderDomainService;
+
+    private final FilterDatasetFileDomainService filterDatasetFileDomainService;
 
     @NonNull
     public Mono<SearchCondition> build(final OpenDataSearcherRequest request) {
@@ -68,17 +70,17 @@ public class OpenDataSearcherFactory {
                     .filter(categoryName -> !categoryNameToIdConverter.contains(categoryName))
                     .toList();
 
-                final List<String> additionalQueryList = Stream.of(
+                final Set<String> additionalQueryList = Stream.of(
                     Stream.of(StringUtils
                         .split(StringUtils.defaultString(request.keyword()), StringUtils.SPACE)).toList(),
                     organizationQueries,
                     categoryQueries
-                ).flatMap(List::stream).toList();
+                ).flatMap(List::stream).collect(Collectors.toUnmodifiableSet());
 
                 return SearchCondition.builder()
-                    .keyword(CollectionUtils.isNotEmpty(additionalQueryList)
-                        ? String.join(StringUtils.SPACE, additionalQueryList)
-                        : null)
+                    .keywordSet(CollectionUtils.isNotEmpty(additionalQueryList)
+                        ? additionalQueryList
+                        : Set.of())
                     // 現時点は東京のみ対応
                     .prefecture(Prefecture.TOKYO)
                     .organizationMap(organizationIds)
@@ -91,9 +93,31 @@ public class OpenDataSearcherFactory {
     @NonNull
     public OpenDataSearcherResponse build(final OpenData openData, final SearchCondition searchCondition) {
         if (openData instanceof TokyoOpenData tokyoOpenData) {
+            final List<DatasetResponse> datasetResponse = tokyoOpenData.getDataset().stream()
+                .map(dataset -> {
+                    final var datasetFileResponse = filterDatasetFileDomainService.filter(dataset.getDatasetFile(), searchCondition)
+                        .stream()
+                        .map(datasetFile -> DatasetFileResponse.builder()
+                            .title(datasetFile.getTitle())
+                            .description(datasetFile.getDescription())
+                            .format(datasetFile.getFormat())
+                            .url(datasetFile.getUrl())
+                            .build())
+                        .toList();
+
+                    return DatasetResponse.builder()
+                        .title(dataset.getTitle())
+                        .description(dataset.getDescription())
+                        .datasetUrl(dataset.getDatasetUrl())
+                        .maintainer(dataset.getMaintainer())
+                        .license(dataset.getLicense())
+                        .files(datasetFileResponse)
+                        .build();
+                }).toList();
+
             return OpenDataSearcherResponse.builder()
                 .searchResultInfo(new SearchResultInfoResponse(tokyoOpenData.getTotal()))
-                .dataset(tokyoOpenData.getDataset())
+                .dataset(datasetResponse)
                 .searchCondition(SearchConditionResponse.from(searchCondition))
                 .showMoreUrl(urlBuilderDomainService.build(searchCondition))
                 .build();

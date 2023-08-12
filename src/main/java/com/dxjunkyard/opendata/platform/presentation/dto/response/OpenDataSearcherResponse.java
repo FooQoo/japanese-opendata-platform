@@ -1,6 +1,5 @@
 package com.dxjunkyard.opendata.platform.presentation.dto.response;
 
-import com.dxjunkyard.opendata.platform.domain.model.opendata.TokyoDataset;
 import lombok.Builder;
 import org.springframework.lang.NonNull;
 
@@ -10,7 +9,7 @@ import java.util.List;
 @Builder
 public record OpenDataSearcherResponse(
     @NonNull SearchResultInfoResponse searchResultInfo,
-    @NonNull List<TokyoDataset> dataset,
+    @NonNull List<DatasetResponse> dataset,
     @NonNull SearchConditionResponse searchCondition,
     @NonNull String showMoreUrl
 ) implements Serializable {

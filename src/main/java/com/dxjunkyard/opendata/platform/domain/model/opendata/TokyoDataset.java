@@ -11,9 +11,12 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @ToString
 public class TokyoDataset implements Dataset {
+    // 以下の値を超えたら、ファイルが多すぎると判断する
+    private static final int TOO_MANY_FILES = 3;
+    
     @NonNull
     private final String title;
     @Nullable
@@ -27,15 +30,13 @@ public class TokyoDataset implements Dataset {
     @NonNull
     private final List<TokyoDatasetFile> files;
 
-    @RequiredArgsConstructor
-    @Getter
-    @Builder
-    public static class TokyoDatasetFile {
-        @NonNull
-        private final String title;
-        @NonNull
-        private final String format;
-        @NonNull
-        private final String url;
+    @Override
+    public List<DatasetFile> getDatasetFile() {
+        return files.stream().map(file -> (DatasetFile) file).toList();
+    }
+
+    @Override
+    public boolean isTooManyFiles() {
+        return files.size() > TOO_MANY_FILES;
     }
 }

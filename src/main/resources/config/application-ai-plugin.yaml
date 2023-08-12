@@ -1,9 +1,9 @@
 ai-plugin:
   schema-version: v1
-  name-for-human: Search OpenData In Japan
-  name-for-model: search_open_tata_in_japan
-  description-for-human: Search for OpenData in Japan.
-  description-for-model: Search for OpenData in Japan. Should show first user's search condition. Next, should show 'totalOfHits'. Finally, show 'showMoreUrl'. Must not generate your own parameters when not found among the options of organization, category, format.
+  name-for-human: Tokyo OpenData
+  name-for-model: tokyo_opendata
+  description-for-human: Search for OpenData in Tokyo.
+  description-for-model: Search for OpenData in Tokyo. Do not falsify open data when there is no corresponding data in the search results. Should show first user's search condition. Next, should show 'totalOfHits'. Finally, show 'showMoreUrl'. Must not generate your own parameters when not found among the options of organization, category, format.
   auth:
     type: none
   api:
