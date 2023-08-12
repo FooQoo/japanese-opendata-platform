@@ -28,7 +28,8 @@ public class OpenDataSearcherController {
     private final OpenDataSearcherFactory openDataSearcherFactory;
 
     @Operation(
-        description = "Search OpenData."
+        description = "Search OpenData.",
+        tags = {"opendata"}
     )
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Success",

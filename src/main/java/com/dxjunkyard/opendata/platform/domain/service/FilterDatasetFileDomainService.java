@@ -2,6 +2,7 @@ package com.dxjunkyard.opendata.platform.domain.service;
 
 import com.dxjunkyard.opendata.platform.domain.model.opendata.DatasetFile;
 import com.dxjunkyard.opendata.platform.domain.model.search.SearchCondition;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 @Component
 public class FilterDatasetFileDomainService {
 
+    @NonNull
     public List<DatasetFile> filter(final List<DatasetFile> datasetFiles, final SearchCondition searchCondition) {
         return datasetFiles.stream()
             .sorted(Comparator

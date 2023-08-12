@@ -2,6 +2,7 @@ package com.dxjunkyard.opendata.platform.domain.service;
 
 import com.dxjunkyard.opendata.platform.domain.model.search.SearchCondition;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -14,6 +15,7 @@ public class UrlBuilderDomainService {
 
     private static final String CATALOG_TOKYO_BASE_URL = "https://catalog.data.metro.tokyo.lg.jp/dataset";
 
+    @NonNull
     public String build(final SearchCondition searchCondition) {
 
         final Map<String, Object> map = new HashMap<>();
