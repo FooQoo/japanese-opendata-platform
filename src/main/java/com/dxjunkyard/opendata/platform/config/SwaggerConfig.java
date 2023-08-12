@@ -80,6 +80,8 @@ public class SwaggerConfig {
                             parameter.setDescription(parameter.getDescription() + " Select one of the following options. e.g. " + StringUtils.join(categoryNameList, ",") + ".");
                         case "format" ->
                             parameter.setDescription(parameter.getDescription() + " Option of Format are " + StringUtils.join(OpenDataFormat.getValues(), ",") + ".");
+                        default -> {
+                        }
                     }
                 });
             }

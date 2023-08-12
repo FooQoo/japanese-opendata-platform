@@ -6,6 +6,8 @@ import lombok.Builder;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
+import java.io.Serializable;
+
 @Builder
 public record DatasetFileResponse(
     @NonNull String title,
@@ -13,7 +15,7 @@ public record DatasetFileResponse(
     String description,
     @Nullable String format,
     @NonNull String url
-) {
+) implements Serializable {
 
     public static DatasetFileResponse from(final DatasetFile datasetFile) {
         if (datasetFile instanceof TokyoDatasetFile tokyoDatasetFile) {
