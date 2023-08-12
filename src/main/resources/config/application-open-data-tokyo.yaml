@@ -1,0 +1,7 @@
+repository:
+  open-data:
+    tokyo:
+      url: https://catalog.data.metro.tokyo.lg.jp/api/3/action/
+      search-open-data-path: package_search
+      fetch-area-path: organization_list
+      fetch-category-path: group_list
