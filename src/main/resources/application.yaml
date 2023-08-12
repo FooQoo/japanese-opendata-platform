@@ -20,3 +20,8 @@ spring:
         - open-data-tokyo
         - ai-plugin
         - ai-plugin-local
+      prod:
+        - doc
+        - open-data-tokyo
+        - ai-plugin
+        - ai-plugin-prod
