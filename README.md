@@ -1,1 +1,1 @@
-# opendata-platform
+# tokyo-opendata-chatgpt-plugin
