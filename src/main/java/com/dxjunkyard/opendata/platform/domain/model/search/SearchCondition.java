@@ -20,6 +20,9 @@ import java.util.stream.Collectors;
 public class SearchCondition {
 
     @NonNull
+    private final Integer page;
+
+    @NonNull
     private final Set<String> keywordSet;
 
     @NonNull

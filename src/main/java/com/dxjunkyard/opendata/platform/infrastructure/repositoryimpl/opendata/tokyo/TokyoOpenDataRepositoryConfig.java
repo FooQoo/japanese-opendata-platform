@@ -37,7 +37,6 @@ public class TokyoOpenDataRepositoryConfig {
             .exchangeStrategies(WebClientConfig.exchangeStrategies())
             .filter(WebClientConfig.logRequest())
             .filter(WebClientConfig.logResponse())
-
             .build();
     }
 }

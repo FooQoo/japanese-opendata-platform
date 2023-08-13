@@ -27,7 +27,8 @@ public class TokyoOpenDataRepository {
 
         final Map<String, Object> searchRequestParameterMap = new HashMap<>();
 
-        searchRequestParameterMap.put("rows", 5);
+        searchRequestParameterMap.put("rows", request.rows());
+        searchRequestParameterMap.put("start", request.start());
         Optional.ofNullable(request.q())
             .ifPresent(q -> searchRequestParameterMap.put("q", q));
 

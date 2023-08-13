@@ -78,6 +78,7 @@ public class OpenDataSearcherFactory {
                 ).flatMap(List::stream).collect(Collectors.toUnmodifiableSet());
 
                 return SearchCondition.builder()
+                    .page(request.page())
                     .keywordSet(CollectionUtils.isNotEmpty(additionalQueryList)
                         ? additionalQueryList
                         : Set.of())
