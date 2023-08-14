@@ -25,7 +25,7 @@ public class RequestLoggingFilter implements WebFilter {
      */
     @NonNull
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+    public Mono<Void> filter(final ServerWebExchange exchange, @NonNull final WebFilterChain chain) {
         final var request = exchange.getRequest();
 
         final String headers = request.getHeaders().entrySet().stream()
@@ -34,7 +34,9 @@ public class RequestLoggingFilter implements WebFilter {
             .reduce((a, b) -> a + ", " + b)
             .orElse(StringUtils.EMPTY);
 
-        log.info("Request: {} {} {}", request.getMethod(), request.getURI(), headers);
+        if (!exchange.getRequest().getURI().getPath().contains("actuator")) {
+            log.info("Request: {} {} {}", request.getMethod(), request.getURI(), headers);
+        }
 
         return chain.filter(exchange);
     }
