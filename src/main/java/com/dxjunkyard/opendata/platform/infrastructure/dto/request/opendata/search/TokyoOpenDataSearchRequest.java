@@ -1,6 +1,6 @@
 package com.dxjunkyard.opendata.platform.infrastructure.dto.request.opendata.search;
 
-import com.dxjunkyard.opendata.platform.domain.model.search.SearchCondition;
+import com.dxjunkyard.opendata.platform.domain.model.search.condition.SearchCondition;
 import lombok.Builder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
@@ -26,13 +26,13 @@ public record TokyoOpenDataSearchRequest(
     @NonNull
     static public TokyoOpenDataSearchRequest from(final SearchCondition searchCondition) {
 
-        final String searchKeyword = searchCondition.getKeyword();
+        final String searchKeyword = searchCondition.getAllQuery();
 
-        final String organization = searchCondition.getOrganizationIdSet().stream()
+        final String organization = searchCondition.getOrganizationSearchCondition().getOrganizationIdSet().stream()
             .map(organizationId -> "organization:" + organizationId.toString())
             .collect(Collectors.joining(" OR "));
 
-        final String groups = searchCondition.getCategoryIdSet().stream()
+        final String groups = searchCondition.getCategorySearchCondition().getCategoryIdSet().stream()
             .map(categoryId -> "groups:" + categoryId.toString())
             .collect(Collectors.joining(" AND "));
 

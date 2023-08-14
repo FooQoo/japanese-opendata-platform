@@ -1,6 +1,6 @@
 package com.dxjunkyard.opendata.platform.presentation.dto.response;
 
-import com.dxjunkyard.opendata.platform.domain.model.search.SearchCondition;
+import com.dxjunkyard.opendata.platform.domain.model.search.condition.SearchCondition;
 import org.springframework.lang.NonNull;
 
 import java.io.Serializable;
@@ -20,9 +20,9 @@ public record SearchConditionResponse(
     @NonNull
     public static SearchConditionResponse from(final SearchCondition searchCondition) {
         return new SearchConditionResponse(
-            searchCondition.getKeyword(),
-            searchCondition.getOrganization(),
-            searchCondition.getCategory(),
+            searchCondition.getAllQuery(),
+            searchCondition.getOrganizationSearchCondition().getOrganization(),
+            searchCondition.getCategorySearchCondition().getCategory(),
             searchCondition.getFormat()
         );
     }

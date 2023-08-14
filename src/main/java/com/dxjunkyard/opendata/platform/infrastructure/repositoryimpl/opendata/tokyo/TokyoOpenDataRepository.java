@@ -1,7 +1,7 @@
 package com.dxjunkyard.opendata.platform.infrastructure.repositoryimpl.opendata.tokyo;
 
 import com.dxjunkyard.opendata.platform.infrastructure.dto.request.opendata.search.TokyoOpenDataSearchRequest;
-import com.dxjunkyard.opendata.platform.infrastructure.dto.response.opendata.area.TokyoOpenDataAreaResponse;
+import com.dxjunkyard.opendata.platform.infrastructure.dto.response.opendata.organization.TokyoOpenDataOrganizationResponse;
 import com.dxjunkyard.opendata.platform.infrastructure.dto.response.opendata.category.TokyoOpenDataCategoryResponse;
 import com.dxjunkyard.opendata.platform.infrastructure.dto.response.opendata.search.TokyoOpenDataSearchResponse;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +45,7 @@ public class TokyoOpenDataRepository {
 
     @NonNull
 //    @Cacheable("organization")
-    public Mono<TokyoOpenDataAreaResponse> fetchArea() {
+    public Mono<TokyoOpenDataOrganizationResponse> fetchArea() {
 
         final Map<String, Object> areaRequestParameterMap = Map.of(
             "all_fields", true
@@ -59,7 +59,7 @@ public class TokyoOpenDataRepository {
                 return uriBuilder.build(areaRequestParameterMap);
             })
             .retrieve()
-            .bodyToMono(TokyoOpenDataAreaResponse.class);
+            .bodyToMono(TokyoOpenDataOrganizationResponse.class);
     }
 
     @NonNull

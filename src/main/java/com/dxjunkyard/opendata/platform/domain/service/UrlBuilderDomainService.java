@@ -1,6 +1,6 @@
 package com.dxjunkyard.opendata.platform.domain.service;
 
-import com.dxjunkyard.opendata.platform.domain.model.search.SearchCondition;
+import com.dxjunkyard.opendata.platform.domain.model.search.condition.SearchCondition;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -22,20 +22,20 @@ public class UrlBuilderDomainService {
 
         final var builder = UriComponentsBuilder.fromHttpUrl(CATALOG_TOKYO_BASE_URL);
 
-        Optional.ofNullable(searchCondition.getKeyword())
+        Optional.ofNullable(searchCondition.getAllQuery())
             .filter(StringUtils::isNotBlank)
             .ifPresent(keyword -> {
                 map.put("q", keyword);
                 builder.queryParam("q", "{q}");
             });
 
-        searchCondition.getOrganizationIdSet()
+        searchCondition.getOrganizationSearchCondition().getOrganizationIdSet()
             .forEach(organizationId -> {
                 map.put("organization_" + organizationId.getValue(), organizationId.getValue());
                 builder.queryParam("organization", "{organization_" + organizationId.getValue() + "}");
             });
 
-        searchCondition.getCategoryIdSet()
+        searchCondition.getCategorySearchCondition().getCategoryIdSet()
             .forEach(categoryId -> {
                 map.put("groups_" + categoryId.getValue(), categoryId.getValue());
                 builder.queryParam("groups", "{groups_" + categoryId.getValue() + "}");

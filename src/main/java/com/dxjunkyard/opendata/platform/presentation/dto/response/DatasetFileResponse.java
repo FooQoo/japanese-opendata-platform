@@ -1,7 +1,7 @@
 package com.dxjunkyard.opendata.platform.presentation.dto.response;
 
 import com.dxjunkyard.opendata.platform.domain.model.opendata.DatasetFile;
-import com.dxjunkyard.opendata.platform.domain.model.opendata.TokyoDatasetFile;
+import com.dxjunkyard.opendata.platform.domain.model.opendata.tokyo.TokyoDatasetFile;
 import lombok.Builder;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;

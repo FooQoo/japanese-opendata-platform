@@ -1,6 +1,8 @@
-package com.dxjunkyard.opendata.platform.domain.model.opendata;
+package com.dxjunkyard.opendata.platform.domain.model.opendata.tokyo;
 
-import com.dxjunkyard.opendata.platform.domain.model.search.SearchCondition;
+import com.dxjunkyard.opendata.platform.domain.model.opendata.DatasetFile;
+import com.dxjunkyard.opendata.platform.domain.model.search.condition.SearchCondition;
+import com.dxjunkyard.opendata.platform.domain.model.search.condition.KeywordSearchCondition;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +20,7 @@ public class TokyoDatasetFile implements DatasetFile {
     private final String title;
     @NonNull
     private final String description;
-    @NonNull
+    @Nullable
     private final String format;
     @Nullable
     private final LocalDateTime lastModified;
@@ -65,8 +67,8 @@ public class TokyoDatasetFile implements DatasetFile {
             return true;
         }
 
-        final boolean isMatchedTitle = StringUtils.containsAny(title, searchCondition.getKeywordSet().toArray(String[]::new));
-        final boolean isMatchedDescription = StringUtils.containsAny(description, searchCondition.getKeywordSet().toArray(String[]::new));
+        final boolean isMatchedTitle = StringUtils.containsAny(title, searchCondition.getAllQuerySet().toArray(String[]::new));
+        final boolean isMatchedDescription = StringUtils.containsAny(description, searchCondition.getAllQuerySet().toArray(String[]::new));
 
         return isMatchedTitle || isMatchedDescription;
     }

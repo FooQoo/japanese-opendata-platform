@@ -30,13 +30,12 @@ public class RestExceptionHandler {
      * ValidationExceptionの例外ハンドリング.
      *
      * @param e                 ValidationException
-     * @param serverWebExchange ServerWebExchange
      * @return Mono<OpenDataSearcherErrorResponse>
      */
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public Mono<ResponseEntity<OpenDataSearcherErrorResponse>> handleBadRequestException(final ValidationException e, final ServerWebExchange serverWebExchange) {
+    public Mono<ResponseEntity<OpenDataSearcherErrorResponse>> handleBadRequestException(final ValidationException e) {
         log.error(e.getMessage(), e);
         return Mono.just(OpenDataSearcherErrorResponsePattern.BAD_REQUEST.createResponse());
     }
@@ -45,13 +44,12 @@ public class RestExceptionHandler {
      * TypeMismatchExceptionの例外ハンドリング.
      *
      * @param e                 TypeMismatchException
-     * @param serverWebExchange ServerWebExchange
      * @return Mono<OpenDataSearcherErrorResponse>
      */
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public Mono<ResponseEntity<OpenDataSearcherErrorResponse>> handleBadRequestException(final TypeMismatchException e, final ServerWebExchange serverWebExchange) {
+    public Mono<ResponseEntity<OpenDataSearcherErrorResponse>> handleBadRequestException(final TypeMismatchException e) {
         log.error(e.getMessage(), e);
         return Mono.just(OpenDataSearcherErrorResponsePattern.BAD_REQUEST.createResponse());
     }
@@ -60,13 +58,12 @@ public class RestExceptionHandler {
      * WebExchangeBindExceptionの例外ハンドリング.
      *
      * @param e                 TypeMismatchException
-     * @param serverWebExchange ServerWebExchange
      * @return Mono<OpenDataSearcherErrorResponse>
      */
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public Mono<ResponseEntity<OpenDataSearcherErrorResponse>> handleBadRequestException(final WebExchangeBindException e, final ServerWebExchange serverWebExchange) {
+    public Mono<ResponseEntity<OpenDataSearcherErrorResponse>> handleBadRequestException(final WebExchangeBindException e) {
         log.error(e.getMessage(), e);
         return Mono.just(OpenDataSearcherErrorResponsePattern.BAD_REQUEST.createResponse());
     }
@@ -75,13 +72,12 @@ public class RestExceptionHandler {
      * その他の例外ハンドリング.
      *
      * @param e                 例外
-     * @param serverWebExchange ServerWebExchange
      * @return Mono<OpenDataSearcherErrorResponse>
      */
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public Mono<ResponseEntity<OpenDataSearcherErrorResponse>> handleBadRequestException(final Throwable e, final ServerWebExchange serverWebExchange) {
+    public Mono<ResponseEntity<OpenDataSearcherErrorResponse>> handleBadRequestException(final Throwable e) {
         log.error(e.getMessage(), e);
         return Mono.just(OpenDataSearcherErrorResponsePattern.INTERNAL_SERVER_ERROR.createResponse());
     }

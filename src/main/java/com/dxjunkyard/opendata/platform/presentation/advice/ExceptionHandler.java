@@ -34,7 +34,7 @@ public class ExceptionHandler implements WebExceptionHandler {
      */
     @Override
     @NonNull
-    public Mono<Void> handle(final ServerWebExchange exchange, final Throwable ex) {
+    public Mono<Void> handle(@NonNull final ServerWebExchange exchange, @NonNull final Throwable ex) {
 
         log.error(ex.getMessage(), ex);
 

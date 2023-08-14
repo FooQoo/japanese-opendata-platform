@@ -1,6 +1,6 @@
-package com.dxjunkyard.opendata.platform.infrastructure.dto.response.opendata.category;
+package com.dxjunkyard.opendata.platform.infrastructure.dto.response.opendata.organization;
 
-import com.dxjunkyard.opendata.platform.domain.model.search.CategoryNameToIdConverter;
+import com.dxjunkyard.opendata.platform.domain.model.search.OrganizationNameToIdConverter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -11,13 +11,13 @@ import java.util.List;
 
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record TokyoOpenDataCategoryResponse(
+public record TokyoOpenDataOrganizationResponse(
     List<ResultResponse> result
-) implements OpenDataCategoryResponse {
+) implements OpenDataOrganizationResponse {
 
     @NonNull
-    public CategoryNameToIdConverter convertCategory() {
-        final CategoryNameToIdConverter converter = CategoryNameToIdConverter.init();
+    public OrganizationNameToIdConverter convertOrganization() {
+        final OrganizationNameToIdConverter converter = OrganizationNameToIdConverter.init();
 
         result().forEach(result -> converter.add(result.title(), result.name()));
 

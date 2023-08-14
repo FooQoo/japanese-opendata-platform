@@ -1,7 +1,7 @@
 package com.dxjunkyard.opendata.platform.application.service;
 
 import com.dxjunkyard.opendata.platform.domain.model.opendata.OpenData;
-import com.dxjunkyard.opendata.platform.domain.model.search.SearchCondition;
+import com.dxjunkyard.opendata.platform.domain.model.search.condition.SearchCondition;
 import com.dxjunkyard.opendata.platform.domain.repository.opendata.OpenDataRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;

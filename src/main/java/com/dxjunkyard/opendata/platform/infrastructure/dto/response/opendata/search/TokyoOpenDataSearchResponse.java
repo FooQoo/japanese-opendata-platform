@@ -1,8 +1,8 @@
 package com.dxjunkyard.opendata.platform.infrastructure.dto.response.opendata.search;
 
-import com.dxjunkyard.opendata.platform.domain.model.opendata.TokyoDataset;
-import com.dxjunkyard.opendata.platform.domain.model.opendata.TokyoDatasetFile;
-import com.dxjunkyard.opendata.platform.domain.model.opendata.TokyoOpenData;
+import com.dxjunkyard.opendata.platform.domain.model.opendata.tokyo.TokyoDataset;
+import com.dxjunkyard.opendata.platform.domain.model.opendata.tokyo.TokyoDatasetFile;
+import com.dxjunkyard.opendata.platform.domain.model.opendata.tokyo.TokyoOpenData;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

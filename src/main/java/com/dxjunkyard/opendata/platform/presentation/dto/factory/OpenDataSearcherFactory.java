@@ -1,30 +1,26 @@
 package com.dxjunkyard.opendata.platform.presentation.dto.factory;
 
-import com.dxjunkyard.opendata.platform.domain.model.opendata.CategoryId;
 import com.dxjunkyard.opendata.platform.domain.model.opendata.OpenData;
-import com.dxjunkyard.opendata.platform.domain.model.opendata.OrganizationId;
-import com.dxjunkyard.opendata.platform.domain.model.opendata.TokyoOpenData;
+import com.dxjunkyard.opendata.platform.domain.model.opendata.tokyo.TokyoOpenData;
 import com.dxjunkyard.opendata.platform.domain.model.search.CategoryNameToIdConverter;
 import com.dxjunkyard.opendata.platform.domain.model.search.OrganizationNameToIdConverter;
 import com.dxjunkyard.opendata.platform.domain.model.search.Prefecture;
-import com.dxjunkyard.opendata.platform.domain.model.search.SearchCondition;
+import com.dxjunkyard.opendata.platform.domain.model.search.condition.CategorySearchCondition;
+import com.dxjunkyard.opendata.platform.domain.model.search.condition.KeywordSearchCondition;
+import com.dxjunkyard.opendata.platform.domain.model.search.condition.OrganizationSearchCondition;
+import com.dxjunkyard.opendata.platform.domain.model.search.condition.SearchCondition;
 import com.dxjunkyard.opendata.platform.domain.repository.opendata.OpenDataRepository;
 import com.dxjunkyard.opendata.platform.domain.service.FilterDatasetFileDomainService;
 import com.dxjunkyard.opendata.platform.domain.service.UrlBuilderDomainService;
 import com.dxjunkyard.opendata.platform.presentation.dto.request.OpenDataSearcherRequest;
 import com.dxjunkyard.opendata.platform.presentation.dto.response.*;
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -46,48 +42,35 @@ public class OpenDataSearcherFactory {
             .fetchCategory();
 
         return Mono.zip(organizationNameToIdConverterMono, categoryNameToIdConverterMono)
-            .map(tuple -> {
+            .flatMap(tuple -> {
                 final OrganizationNameToIdConverter organizationNameToIdConverter = tuple.getT1();
                 final CategoryNameToIdConverter categoryNameToIdConverter = tuple.getT2();
 
-                final Map<String, OrganizationId> organizationIds = request.organizationSet().stream()
-                    .filter(organizationNameToIdConverter::contains)
-                    .collect(Collectors.toUnmodifiableMap(
-                        key -> key,
-                        organizationNameToIdConverter::convert));
+                try {
+                    final OrganizationSearchCondition organizationSearchCondition = OrganizationSearchCondition.of(
+                        organizationNameToIdConverter,
+                        request.organizationSet());
 
-                final List<String> organizationQueries = request.organizationSet().stream()
-                    .filter(organizationName -> !organizationNameToIdConverter.contains(organizationName))
-                    .toList();
+                    final CategorySearchCondition categorySearchCondition = CategorySearchCondition.of(
+                        categoryNameToIdConverter,
+                        request.categorySet());
 
-                final Map<String, CategoryId> categoryIds = request.categorySet().stream()
-                    .filter(categoryNameToIdConverter::contains)
-                    .collect(Collectors.toUnmodifiableMap(
-                        key -> key,
-                        categoryNameToIdConverter::convert));
+                    final KeywordSearchCondition keywordSearchCondition = KeywordSearchCondition.of(request.keyword());
 
-                final List<String> categoryQueries = request.categorySet().stream()
-                    .filter(categoryName -> !categoryNameToIdConverter.contains(categoryName))
-                    .toList();
-
-                final Set<String> additionalQueryList = Stream.of(
-                    Stream.of(StringUtils
-                        .split(StringUtils.defaultString(request.keyword()), StringUtils.SPACE)).toList(),
-                    organizationQueries,
-                    categoryQueries
-                ).flatMap(List::stream).collect(Collectors.toUnmodifiableSet());
-
-                return SearchCondition.builder()
-                    .page(request.page())
-                    .keywordSet(CollectionUtils.isNotEmpty(additionalQueryList)
-                        ? additionalQueryList
-                        : Set.of())
-                    // 現時点は東京のみ対応
-                    .prefecture(Prefecture.TOKYO)
-                    .organizationMap(organizationIds)
-                    .categoryMap(categoryIds)
-                    .formatSet(request.formatSet())
-                    .build();
+                    return Mono.just(
+                        SearchCondition.builder()
+                            .page(request.page())
+                            .keywordSearchCondition(keywordSearchCondition)
+                            // 現時点は東京のみ対応
+                            .prefecture(Prefecture.TOKYO)
+                            .organizationSearchCondition(organizationSearchCondition)
+                            .categorySearchCondition(categorySearchCondition)
+                            .formatSet(request.formatSet())
+                            .build());
+                } catch (IllegalArgumentException illegalArgumentException) {
+                    return Mono.error(
+                        new ValidationException(illegalArgumentException.getMessage()));
+                }
             });
     }
 
@@ -98,22 +81,10 @@ public class OpenDataSearcherFactory {
                 .map(dataset -> {
                     final var datasetFileResponse = filterDatasetFileDomainService.filter(dataset.getDatasetFile(), searchCondition)
                         .stream()
-                        .map(datasetFile -> DatasetFileResponse.builder()
-                            .title(datasetFile.getTitle())
-                            .description(datasetFile.getDescription())
-                            .format(datasetFile.getFormat())
-                            .url(datasetFile.getUrl())
-                            .build())
+                        .map(DatasetFileResponse::from)
                         .toList();
 
-                    return DatasetResponse.builder()
-                        .title(dataset.getTitle())
-                        .description(dataset.getDescription())
-                        .datasetUrl(dataset.getDatasetUrl())
-                        .maintainer(dataset.getMaintainer())
-                        .license(dataset.getLicense())
-                        .files(datasetFileResponse)
-                        .build();
+                    return DatasetResponse.from(dataset, datasetFileResponse);
                 }).toList();
 
             return OpenDataSearcherResponse.builder()

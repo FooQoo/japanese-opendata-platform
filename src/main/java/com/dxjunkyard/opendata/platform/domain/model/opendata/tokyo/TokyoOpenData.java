@@ -1,5 +1,6 @@
-package com.dxjunkyard.opendata.platform.domain.model.opendata;
+package com.dxjunkyard.opendata.platform.domain.model.opendata.tokyo;
 
+import com.dxjunkyard.opendata.platform.domain.model.opendata.OpenData;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
