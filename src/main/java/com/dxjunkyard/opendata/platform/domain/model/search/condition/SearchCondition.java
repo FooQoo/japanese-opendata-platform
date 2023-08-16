@@ -1,21 +1,15 @@
 package com.dxjunkyard.opendata.platform.domain.model.search.condition;
 
-import com.dxjunkyard.opendata.platform.domain.model.opendata.CategoryId;
 import com.dxjunkyard.opendata.platform.domain.model.opendata.OpenDataFormat;
 import com.dxjunkyard.opendata.platform.domain.model.search.Prefecture;
-import com.dxjunkyard.opendata.platform.domain.model.search.condition.CategorySearchCondition;
-import com.dxjunkyard.opendata.platform.domain.model.search.condition.KeywordSearchCondition;
-import com.dxjunkyard.opendata.platform.domain.model.search.condition.OrganizationSearchCondition;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

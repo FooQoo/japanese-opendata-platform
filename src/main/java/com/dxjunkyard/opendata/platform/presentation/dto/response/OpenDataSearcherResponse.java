@@ -1,6 +1,5 @@
 package com.dxjunkyard.opendata.platform.presentation.dto.response;
 
-import com.dxjunkyard.opendata.platform.domain.model.search.condition.SearchCondition;
 import lombok.Builder;
 import org.springframework.lang.NonNull;
 

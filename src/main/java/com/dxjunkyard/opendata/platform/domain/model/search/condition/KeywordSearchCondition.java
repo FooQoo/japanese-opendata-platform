@@ -1,10 +1,7 @@
 package com.dxjunkyard.opendata.platform.domain.model.search.condition;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.lang.Nullable;
 
 import java.util.Set;
 import java.util.stream.Collectors;
