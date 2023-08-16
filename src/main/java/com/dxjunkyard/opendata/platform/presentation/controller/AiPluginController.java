@@ -2,7 +2,6 @@ package com.dxjunkyard.opendata.platform.presentation.controller;
 
 import com.dxjunkyard.opendata.platform.config.AiPluginConfig;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +13,6 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/.well-known")
-@Slf4j
 public class AiPluginController {
 
     private final AiPluginConfig aiPluginConfig;

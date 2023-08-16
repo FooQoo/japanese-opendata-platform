@@ -9,7 +9,6 @@ import com.dxjunkyard.opendata.platform.domain.model.search.condition.CategorySe
 import com.dxjunkyard.opendata.platform.domain.model.search.condition.KeywordSearchCondition;
 import com.dxjunkyard.opendata.platform.domain.model.search.condition.OrganizationSearchCondition;
 import com.dxjunkyard.opendata.platform.domain.model.search.condition.SearchCondition;
-import com.dxjunkyard.opendata.platform.domain.repository.opendata.OpenDataRepository;
 import com.dxjunkyard.opendata.platform.domain.service.FilterDatasetFileDomainService;
 import com.dxjunkyard.opendata.platform.domain.service.UrlBuilderDomainService;
 import com.dxjunkyard.opendata.platform.presentation.dto.request.OpenDataSearcherRequest;
@@ -18,60 +17,45 @@ import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class OpenDataSearcherFactory {
 
-    private final OpenDataRepository openDataRepository;
-
     private final UrlBuilderDomainService urlBuilderDomainService;
 
     private final FilterDatasetFileDomainService filterDatasetFileDomainService;
 
+    private final OrganizationNameToIdConverter organizationNameToIdConverter;
+
+    private final CategoryNameToIdConverter categoryNameToIdConverter;
+
     @NonNull
-    public Mono<SearchCondition> build(final OpenDataSearcherRequest request) {
+    public SearchCondition build(final OpenDataSearcherRequest request) {
+        try {
+            final OrganizationSearchCondition organizationSearchCondition = OrganizationSearchCondition.of(
+                organizationNameToIdConverter,
+                request.organizationSet());
 
-        final Mono<OrganizationNameToIdConverter> organizationNameToIdConverterMono = openDataRepository
-            .fetchOrganization();
+            final CategorySearchCondition categorySearchCondition = CategorySearchCondition.of(
+                categoryNameToIdConverter,
+                request.categorySet());
 
-        final Mono<CategoryNameToIdConverter> categoryNameToIdConverterMono = openDataRepository
-            .fetchCategory();
+            final KeywordSearchCondition keywordSearchCondition = KeywordSearchCondition.of(request.keyword());
 
-        return Mono.zip(organizationNameToIdConverterMono, categoryNameToIdConverterMono)
-            .flatMap(tuple -> {
-                final OrganizationNameToIdConverter organizationNameToIdConverter = tuple.getT1();
-                final CategoryNameToIdConverter categoryNameToIdConverter = tuple.getT2();
-
-                try {
-                    final OrganizationSearchCondition organizationSearchCondition = OrganizationSearchCondition.of(
-                        organizationNameToIdConverter,
-                        request.organizationSet());
-
-                    final CategorySearchCondition categorySearchCondition = CategorySearchCondition.of(
-                        categoryNameToIdConverter,
-                        request.categorySet());
-
-                    final KeywordSearchCondition keywordSearchCondition = KeywordSearchCondition.of(request.keyword());
-
-                    return Mono.just(
-                        SearchCondition.builder()
-                            .page(request.page())
-                            .keywordSearchCondition(keywordSearchCondition)
-                            // 現時点は東京のみ対応
-                            .prefecture(Prefecture.TOKYO)
-                            .organizationSearchCondition(organizationSearchCondition)
-                            .categorySearchCondition(categorySearchCondition)
-                            .formatSet(request.formatSet())
-                            .build());
-                } catch (IllegalArgumentException illegalArgumentException) {
-                    return Mono.error(
-                        new ValidationException(illegalArgumentException.getMessage()));
-                }
-            });
+            return SearchCondition.builder()
+                    .page(request.page())
+                    .keywordSearchCondition(keywordSearchCondition)
+                    // 現時点は東京のみ対応
+                    .prefecture(Prefecture.TOKYO)
+                    .organizationSearchCondition(organizationSearchCondition)
+                    .categorySearchCondition(categorySearchCondition)
+                    .formatSet(request.formatSet())
+                    .build();
+        } catch (IllegalArgumentException illegalArgumentException) {
+            throw new ValidationException(illegalArgumentException.getMessage());
+        }
     }
 
     @NonNull

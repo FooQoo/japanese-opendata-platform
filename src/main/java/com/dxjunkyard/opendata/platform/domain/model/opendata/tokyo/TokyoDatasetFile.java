@@ -2,7 +2,6 @@ package com.dxjunkyard.opendata.platform.domain.model.opendata.tokyo;
 
 import com.dxjunkyard.opendata.platform.domain.model.opendata.DatasetFile;
 import com.dxjunkyard.opendata.platform.domain.model.search.condition.SearchCondition;
-import com.dxjunkyard.opendata.platform.domain.model.search.condition.KeywordSearchCondition;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
