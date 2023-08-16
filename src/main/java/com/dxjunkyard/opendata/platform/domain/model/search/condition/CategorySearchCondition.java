@@ -2,7 +2,6 @@ package com.dxjunkyard.opendata.platform.domain.model.search.condition;
 
 import com.dxjunkyard.opendata.platform.domain.model.opendata.CategoryId;
 import com.dxjunkyard.opendata.platform.domain.model.search.CategoryNameToIdConverter;
-import com.dxjunkyard.opendata.platform.domain.model.search.CategoryNameToIdConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
