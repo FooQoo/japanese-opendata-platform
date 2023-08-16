@@ -34,7 +34,7 @@ public class OrganizationNameToIdConverter {
     }
 
     @NonNull
-    public Set<String> getOrganizationNameList() {
+    public Set<String> getOrganizationNameSet() {
         return map.keySet();
     }
 }
