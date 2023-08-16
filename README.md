@@ -28,10 +28,10 @@ Tokyo OpenData for ChatGPT Plugin の開発に興味を持っていただき、�
 
 ### 事前知識
 
-本プロジェクトは、GitHub Flow に基づいて開発を行います。
+本プロジェクトは、git-flow に基づいて開発を行います。  
 [A successful Git branching model » nvie.com](https://nvie.com/posts/a-successful-git-branching-model/)
 
-原則、develop ブランチに向けて Pull Request を作成してください。
+原則、develop ブランチに向けて Pull Request を作成してください。  
 develop ブランチにマージされたコードは、リリースのタイミングで main ブランチにマージされます。
 
 main ブランチにマージされたコードは、CODEOWNERS によってリリースパッケージが作成された後に、本番環境にデプロイされます。
