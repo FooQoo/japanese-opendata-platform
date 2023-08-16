@@ -1,6 +1,8 @@
 package com.dxjunkyard.opendata.platform.presentation.controller;
 
 import com.dxjunkyard.opendata.platform.application.service.SearchOpenDataService;
+import com.dxjunkyard.opendata.platform.domain.model.opendata.OpenData;
+import com.dxjunkyard.opendata.platform.domain.model.search.condition.SearchCondition;
 import com.dxjunkyard.opendata.platform.presentation.dto.factory.OpenDataSearcherFactory;
 import com.dxjunkyard.opendata.platform.presentation.dto.request.OpenDataSearcherRequest;
 import com.dxjunkyard.opendata.platform.presentation.dto.response.OpenDataSearcherResponse;
@@ -40,9 +42,11 @@ public class OpenDataSearcherController {
     })
     @GetMapping("/search")
     public Mono<OpenDataSearcherResponse> searchOpenData(@ParameterObject @Validated final OpenDataSearcherRequest request) {
-        return openDataSearcherFactory.build(request)
-            .flatMap(searchCondition -> searchOpenDataService
-                .search(searchCondition)
-                .map(openData -> openDataSearcherFactory.build(openData, searchCondition)));
+
+        final SearchCondition searchCondition = openDataSearcherFactory.build(request);
+
+        final Mono<OpenData> openDataMono = searchOpenDataService.search(searchCondition);
+
+        return openDataMono.map(openData -> openDataSearcherFactory.build(openData, searchCondition));
     }
 }

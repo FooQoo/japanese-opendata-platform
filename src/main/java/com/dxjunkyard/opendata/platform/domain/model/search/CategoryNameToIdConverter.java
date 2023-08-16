@@ -35,7 +35,7 @@ public class CategoryNameToIdConverter {
     }
 
     @NonNull
-    public Set<String> getCategoryNameList() {
+    public Set<String> getCategoryNameSet() {
         return map.keySet();
     }
 }

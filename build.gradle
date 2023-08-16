@@ -31,8 +31,6 @@ dependencies {
         'org.springframework.boot:spring-boot-starter-webflux',
         'org.springdoc:springdoc-openapi-starter-webflux-ui:2.2.0',
         'org.springframework.boot:spring-boot-starter-actuator',
-        'org.springframework.boot:spring-boot-starter-cache',
-        'com.github.ben-manes.caffeine:caffeine',
         'org.apache.commons:commons-collections4:4.4',
     )
     compileOnly(
@@ -64,16 +62,6 @@ test {
         showStandardStreams true
         // イベントを出力する (TestLogEvent)
         events 'started', 'skipped', 'passed', 'failed'
-    }
-}
-
-
-openApi {
-    apiDocsUrl.set("http://localhost:8080/openapi.json")
-    outputDir.set(file("$buildDir/docs"))
-    outputFileName.set("openapi.json")
-    customBootRun {
-        args.set(["--spring.profiles.active=prod-doc"])
     }
 }
 

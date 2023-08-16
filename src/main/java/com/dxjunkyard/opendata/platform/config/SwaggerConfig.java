@@ -3,7 +3,6 @@ package com.dxjunkyard.opendata.platform.config;
 import com.dxjunkyard.opendata.platform.domain.model.opendata.OpenDataFormat;
 import com.dxjunkyard.opendata.platform.domain.model.search.CategoryNameToIdConverter;
 import com.dxjunkyard.opendata.platform.domain.model.search.OrganizationNameToIdConverter;
-import com.dxjunkyard.opendata.platform.domain.repository.opendata.OpenDataRepository;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
@@ -16,10 +15,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.lang.NonNull;
 import org.springframework.validation.annotation.Validated;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Profile("doc")
@@ -54,23 +51,13 @@ public class SwaggerConfig {
 
     @Bean
     @NonNull
-    public OperationCustomizer operationCustomizer(final OpenDataRepository openDataRepository) {
+    public OperationCustomizer operationCustomizer(
+        final CategoryNameToIdConverter categoryNameToIdConverter,
+        final OrganizationNameToIdConverter organizationNameToIdConverter) {
 
-        // 事前に非同期で取得しておく
-        final Mono<OrganizationNameToIdConverter> organizationNameToIdConverter = openDataRepository.fetchOrganization();
-        final Mono<CategoryNameToIdConverter> categoryNameToIdConverter = openDataRepository.fetchCategory();
+        final Set<String> organizationNameSet = organizationNameToIdConverter.getOrganizationNameSet();
 
-        final Set<String> organizationNameList = Optional.ofNullable(
-                organizationNameToIdConverter
-                    .map(OrganizationNameToIdConverter::getOrganizationNameList)
-                    .block())
-            .orElse(Set.of());
-
-        final Set<String> categoryNameList = Optional.ofNullable(
-                categoryNameToIdConverter
-                    .map(CategoryNameToIdConverter::getCategoryNameList)
-                    .block())
-            .orElse(Set.of());
+        final Set<String> categoryNameSet = categoryNameToIdConverter.getCategoryNameSet();
 
         return (operation, handlerMethod) -> {
 
@@ -78,9 +65,9 @@ public class SwaggerConfig {
                 operation.getParameters().forEach(parameter -> {
                     switch (parameter.getName()) {
                         case "organization" ->
-                            parameter.setDescription(parameter.getDescription() + " Options of Organization are " + StringUtils.join(organizationNameList, ",") + ".");
+                            parameter.setDescription(parameter.getDescription() + " Options of Organization are " + StringUtils.join(organizationNameSet, ",") + ".");
                         case "category" ->
-                            parameter.setDescription(parameter.getDescription() + " Select one of the following options. e.g. " + StringUtils.join(categoryNameList, ",") + ".");
+                            parameter.setDescription(parameter.getDescription() + " Select one of the following options. e.g. " + StringUtils.join(categoryNameSet, ",") + ".");
                         case "format" ->
                             parameter.setDescription(parameter.getDescription() + " Option of Format are " + StringUtils.join(OpenDataFormat.getValues(), ",") + ".");
                         default -> {
