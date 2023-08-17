@@ -63,6 +63,7 @@ test {
         // イベントを出力する (TestLogEvent)
         events 'started', 'skipped', 'passed', 'failed'
     }
+    finalizedBy jacocoTestReport // report is always generated after tests run
 }
 
 tasks {
@@ -82,20 +83,15 @@ spotbugsMain {
     excludeFilter = file('./config/spotbugs_filter.xml')
 }
 
-spotbugsTest {
-    reports {
-        html {
-            enabled = true
-            destination = file("$buildDir/reports/spotbugs/spotbugsTest.html")
-            stylesheet = 'fancy-hist.xsl'
-        }
-    }
-    excludeFilter = file('./config/spotbugs_filter.xml')
-}
-
 test.finalizedBy jacocoTestReport
 
 jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        csv.required = false
+    }
+
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(
