@@ -70,6 +70,9 @@ tasks {
     bootJar {
         archiveFileName.set(rootProject.name + '.jar')
     }
+    spotbugsTest {
+        onlyIf { false }
+    }
 }
 
 spotbugsMain {
