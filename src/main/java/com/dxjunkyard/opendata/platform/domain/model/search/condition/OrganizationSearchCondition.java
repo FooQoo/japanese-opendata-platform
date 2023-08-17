@@ -1,6 +1,6 @@
 package com.dxjunkyard.opendata.platform.domain.model.search.condition;
 
-import com.dxjunkyard.opendata.platform.domain.model.opendata.OrganizationId;
+import com.dxjunkyard.opendata.platform.domain.model.OrganizationId;
 import com.dxjunkyard.opendata.platform.domain.model.search.OrganizationNameToIdConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;

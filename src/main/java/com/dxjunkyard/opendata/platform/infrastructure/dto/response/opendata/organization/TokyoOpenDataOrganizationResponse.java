@@ -21,7 +21,7 @@ public record TokyoOpenDataOrganizationResponse(
 
         result().forEach(result -> converter.add(result.title(), result.name()));
 
-        return converter;
+        return converter.freeze();
     }
 
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)

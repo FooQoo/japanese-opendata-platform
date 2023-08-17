@@ -1,6 +1,6 @@
 package com.dxjunkyard.opendata.platform.config;
 
-import com.dxjunkyard.opendata.platform.domain.model.opendata.OpenDataFormat;
+import com.dxjunkyard.opendata.platform.domain.model.OpenDataFormat;
 import com.dxjunkyard.opendata.platform.domain.model.search.CategoryNameToIdConverter;
 import com.dxjunkyard.opendata.platform.domain.model.search.OrganizationNameToIdConverter;
 import io.swagger.v3.oas.models.OpenAPI;

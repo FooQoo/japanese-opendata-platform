@@ -1,6 +1,6 @@
 package com.dxjunkyard.opendata.platform.domain.model.search.condition;
 
-import com.dxjunkyard.opendata.platform.domain.model.opendata.OpenDataFormat;
+import com.dxjunkyard.opendata.platform.domain.model.OpenDataFormat;
 import com.dxjunkyard.opendata.platform.domain.model.search.Prefecture;
 import lombok.Builder;
 import lombok.Getter;
