@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -51,7 +52,7 @@ public class SearchCondition {
     }
 
     public String getAllQuery() {
-        return String.join(" ", getAllQuerySet());
+        return String.join(StringUtils.SPACE, getAllQuerySet());
     }
 
     @Nullable
@@ -61,7 +62,7 @@ public class SearchCondition {
             return null;
         }
 
-        return String.join(" ", formatSet.stream()
+        return String.join(StringUtils.SPACE, formatSet.stream()
             .map(OpenDataFormat::getValue)
             .collect(Collectors.toUnmodifiableSet()));
     }

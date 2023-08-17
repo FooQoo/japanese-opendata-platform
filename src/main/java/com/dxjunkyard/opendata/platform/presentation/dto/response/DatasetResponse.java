@@ -15,10 +15,8 @@ public record DatasetResponse(
     @NonNull String title,
     @Nullable String description,
     @Nullable String datasetUrl,
-
     @NonNull String maintainer,
     @NonNull String license,
-
     @NonNull List<DatasetFileResponse> files) implements Serializable {
 
     public static DatasetResponse from(final Dataset dataset, @Nullable final List<DatasetFileResponse> overriddenFiles) {

@@ -3,6 +3,7 @@ package com.dxjunkyard.opendata.platform.domain.model.search.condition;
 import com.dxjunkyard.opendata.platform.domain.model.OrganizationId;
 import com.dxjunkyard.opendata.platform.domain.model.search.OrganizationNameToIdConverter;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -42,7 +43,7 @@ public class OrganizationSearchCondition {
             return null;
         }
 
-        return String.join(" ", map.keySet());
+        return String.join(StringUtils.SPACE, map.keySet());
     }
 
     @NonNull

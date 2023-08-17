@@ -23,6 +23,11 @@ public class OrganizationNameToIdConverter {
         return new OrganizationNameToIdConverter(new HashMap<>());
     }
 
+    @NonNull
+    public static OrganizationNameToIdConverter empty() {
+        return init().freeze();
+    }
+
     public void add(final String name, final String id) {
         try {
             map.put(name, OrganizationId.from(id));

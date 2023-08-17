@@ -24,6 +24,11 @@ public class CategoryNameToIdConverter {
         return new CategoryNameToIdConverter(new HashMap<>());
     }
 
+    @NonNull
+    public static CategoryNameToIdConverter empty() {
+        return init().freeze();
+    }
+
     public void add(final String name, final String id) {
         try {
             map.put(name, CategoryId.from(id));

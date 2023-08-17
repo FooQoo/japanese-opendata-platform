@@ -53,7 +53,8 @@ public class SwaggerConfig {
     @NonNull
     public OperationCustomizer operationCustomizer(
         final CategoryNameToIdConverter categoryNameToIdConverter,
-        final OrganizationNameToIdConverter organizationNameToIdConverter) {
+        final OrganizationNameToIdConverter organizationNameToIdConverter
+    ) {
 
         final Set<String> organizationNameSet = organizationNameToIdConverter.getOrganizationNameSet();
 

@@ -16,7 +16,7 @@ public class CacheConfig {
     public CategoryNameToIdConverter categoryNameToIdConverter(final OpenDataRepository openDataRepository) {
         final var category =  openDataRepository.fetchCategory().block();
         return Optional.ofNullable(category)
-            .orElseGet(CategoryNameToIdConverter::init);
+            .orElseGet(CategoryNameToIdConverter::empty);
     }
 
     @Bean
@@ -24,6 +24,6 @@ public class CacheConfig {
     public OrganizationNameToIdConverter organizationNameToIdConverter(final OpenDataRepository openDataRepository) {
         final var organization = openDataRepository.fetchOrganization().block();
         return Optional.ofNullable(organization)
-            .orElseGet(OrganizationNameToIdConverter::init);
+            .orElseGet(OrganizationNameToIdConverter::empty);
     }
 }
