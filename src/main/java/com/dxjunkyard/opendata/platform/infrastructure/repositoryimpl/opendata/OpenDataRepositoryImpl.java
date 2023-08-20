@@ -54,7 +54,7 @@ public class OpenDataRepositoryImpl implements OpenDataRepository {
             .map(TokyoOpenDataOrganizationResponse::convertOrganization)
             .onErrorResume(throwable -> {
                 log.error("組織情報の取得に失敗しました。", throwable);
-                return Mono.just(OrganizationNameToIdConverter.init());
+                return Mono.just(OrganizationNameToIdConverter.empty());
             });
     }
 
@@ -65,7 +65,7 @@ public class OpenDataRepositoryImpl implements OpenDataRepository {
             .map(TokyoOpenDataCategoryResponse::convertCategory)
             .onErrorResume(throwable -> {
                 log.error("カテゴリ情報の取得に失敗しました。", throwable);
-                return Mono.just(CategoryNameToIdConverter.init());
+                return Mono.just(CategoryNameToIdConverter.empty());
             });
     }
 }

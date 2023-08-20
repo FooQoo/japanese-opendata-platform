@@ -3,6 +3,7 @@ package com.dxjunkyard.opendata.platform.domain.model.opendata.tokyo;
 import com.dxjunkyard.opendata.platform.domain.model.opendata.DatasetFile;
 import com.dxjunkyard.opendata.platform.domain.model.search.condition.SearchCondition;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
@@ -11,66 +12,16 @@ import org.springframework.lang.Nullable;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-@RequiredArgsConstructor
-@Builder
-public class TokyoDatasetFile implements DatasetFile {
 
-    @NonNull
-    private final String title;
-    @NonNull
-    private final String description;
-    @Nullable
-    private final String format;
-    @Nullable
-    private final LocalDateTime lastModified;
-    @NonNull
-    private final String url;
+public class TokyoDatasetFile extends DatasetFile {
 
-    @Override
-    @NonNull
-    public String getTitle() {
-        return title;
+    @Builder
+    public TokyoDatasetFile(
+        final String title,
+        final String description,
+        final String format,
+        final LocalDateTime lastModified,
+        final String url) {
+        super(title, description, format, lastModified, url);
     }
-
-    @Override
-    @NonNull
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    @Nullable
-    public String getFormat() {
-        return format;
-    }
-
-    @Override
-    @NonNull
-    public String getUrl() {
-        return url;
-    }
-
-    @Override
-    @Nullable
-    public Long getLastModifiedTimestamp() {
-        return Optional.ofNullable(lastModified)
-            .map(timestamp -> timestamp.toEpochSecond(java.time.ZoneOffset.of("+09:00")))
-            .orElse(null);
-    }
-
-    @Override
-    public boolean isMatched(final SearchCondition searchCondition) {
-
-        // キーワードが存在しない場合は、全てのデータをマッチさせる
-        if (!searchCondition.existsKeyword()) {
-            return true;
-        }
-
-        final boolean isMatchedTitle = StringUtils.containsAny(title, searchCondition.getAllQuerySet().toArray(String[]::new));
-        final boolean isMatchedDescription = StringUtils.containsAny(description, searchCondition.getAllQuerySet().toArray(String[]::new));
-
-        return isMatchedTitle || isMatchedDescription;
-    }
-
-
 }

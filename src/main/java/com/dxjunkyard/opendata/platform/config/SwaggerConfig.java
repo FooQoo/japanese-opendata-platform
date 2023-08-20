@@ -1,6 +1,6 @@
 package com.dxjunkyard.opendata.platform.config;
 
-import com.dxjunkyard.opendata.platform.domain.model.opendata.OpenDataFormat;
+import com.dxjunkyard.opendata.platform.domain.model.OpenDataFormat;
 import com.dxjunkyard.opendata.platform.domain.model.search.CategoryNameToIdConverter;
 import com.dxjunkyard.opendata.platform.domain.model.search.OrganizationNameToIdConverter;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -53,7 +53,8 @@ public class SwaggerConfig {
     @NonNull
     public OperationCustomizer operationCustomizer(
         final CategoryNameToIdConverter categoryNameToIdConverter,
-        final OrganizationNameToIdConverter organizationNameToIdConverter) {
+        final OrganizationNameToIdConverter organizationNameToIdConverter
+    ) {
 
         final Set<String> organizationNameSet = organizationNameToIdConverter.getOrganizationNameSet();
 

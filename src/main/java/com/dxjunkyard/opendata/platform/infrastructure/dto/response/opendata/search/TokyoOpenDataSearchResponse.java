@@ -1,5 +1,6 @@
 package com.dxjunkyard.opendata.platform.infrastructure.dto.response.opendata.search;
 
+import com.dxjunkyard.opendata.platform.domain.model.opendata.DatasetFile;
 import com.dxjunkyard.opendata.platform.domain.model.opendata.tokyo.TokyoDataset;
 import com.dxjunkyard.opendata.platform.domain.model.opendata.tokyo.TokyoDatasetFile;
 import com.dxjunkyard.opendata.platform.domain.model.opendata.tokyo.TokyoOpenData;

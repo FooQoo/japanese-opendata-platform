@@ -63,7 +63,7 @@ public class OpenDataSearcherFactory {
         if (openData instanceof TokyoOpenData tokyoOpenData) {
             final List<DatasetResponse> datasetResponse = tokyoOpenData.getDataset().stream()
                 .map(dataset -> {
-                    final var datasetFileResponse = filterDatasetFileDomainService.filter(dataset.getDatasetFile(), searchCondition)
+                    final var datasetFileResponse = filterDatasetFileDomainService.filter(dataset.getFiles(), searchCondition)
                         .stream()
                         .map(DatasetFileResponse::from)
                         .toList();

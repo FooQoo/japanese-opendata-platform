@@ -1,6 +1,6 @@
 package com.dxjunkyard.opendata.platform.presentation.dto.request;
 
-import com.dxjunkyard.opendata.platform.domain.model.opendata.OpenDataFormat;
+import com.dxjunkyard.opendata.platform.domain.model.OpenDataFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.annotation.Nullable;
