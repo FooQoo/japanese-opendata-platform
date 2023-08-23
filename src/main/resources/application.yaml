@@ -1,6 +1,6 @@
 spring:
   application:
-    name: abtest-checker-plugin
+    name: tokyo-opendata
   main:
     banner-mode: off
   messages:

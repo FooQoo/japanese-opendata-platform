@@ -1,4 +1,4 @@
-package com.dxjunkyard.opendata.platform.domain.model.opendata;
+package com.dxjunkyard.opendata.platform.domain.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

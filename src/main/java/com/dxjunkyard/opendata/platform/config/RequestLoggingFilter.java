@@ -34,7 +34,7 @@ public class RequestLoggingFilter implements WebFilter {
             .reduce((a, b) -> a + ", " + b)
             .orElse(StringUtils.EMPTY);
 
-        if (!exchange.getRequest().getURI().getPath().contains("actuator")) {
+        if (!exchange.getRequest().getURI().getPath().startsWith("/actuator")) {
             log.info("Request: {} {} {}", request.getMethod(), request.getURI(), headers);
         }
 

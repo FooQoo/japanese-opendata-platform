@@ -1,5 +1,6 @@
 package com.dxjunkyard.opendata.platform.domain.model.opendata.tokyo;
 
+import com.dxjunkyard.opendata.platform.domain.model.opendata.Dataset;
 import com.dxjunkyard.opendata.platform.domain.model.opendata.OpenData;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,15 +10,12 @@ import org.springframework.lang.NonNull;
 
 import java.util.List;
 
-@RequiredArgsConstructor
-@Getter
-@Builder(toBuilder = true)
-@ToString
-public class TokyoOpenData implements OpenData {
+public class TokyoOpenData extends OpenData {
 
-    @NonNull
-    private final Integer total;
-
-    @NonNull
-    private final List<TokyoDataset> dataset;
+    @Builder
+    public TokyoOpenData(
+        @NonNull final Integer total,
+        @NonNull final List<TokyoDataset> dataset) {
+        super(total, dataset.stream().map(data -> (Dataset) data).toList());
+    }
 }
