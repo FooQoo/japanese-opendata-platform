@@ -12,7 +12,6 @@ import java.util.Objects;
 @Builder
 public record DatasetResponse(
     @NonNull String title,
-    @NonNull String titleEn,
     @Nullable String description,
     @Nullable String datasetUrl,
     @NonNull String maintainer,
@@ -27,7 +26,6 @@ public record DatasetResponse(
 
         return DatasetResponse.builder()
             .title(dataset.getTitle())
-            .titleEn(titleEn)
             .description(dataset.getDescription())
             .datasetUrl(dataset.getDatasetUrl())
             .maintainer(dataset.getMaintainer())
