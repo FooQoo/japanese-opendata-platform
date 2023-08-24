@@ -1,6 +1,7 @@
 package com.dxjunkyard.opendata.platform.domain.model.opendata;
 
 import com.dxjunkyard.opendata.platform.domain.model.search.condition.SearchCondition;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -13,22 +14,23 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @EqualsAndHashCode
-public abstract class DatasetFile {
+@Builder
+public class DatasetFile {
 
     @NonNull
     @Getter
-    protected final String title;
+    private final String title;
     @NonNull
     @Getter
-    protected final String description;
+    private final String description;
     @Nullable
     @Getter
-    protected final String format;
+    private final String format;
     @Nullable
-    protected final LocalDateTime lastModified;
+    private final LocalDateTime lastModified;
     @NonNull
     @Getter
-    protected final String url;
+    private final String url;
 
     @Nullable
     public Long getLastModifiedTimestamp() {

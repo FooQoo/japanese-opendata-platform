@@ -1,7 +1,6 @@
 package com.dxjunkyard.opendata.platform.presentation.dto.factory;
 
 import com.dxjunkyard.opendata.platform.domain.model.opendata.OpenData;
-import com.dxjunkyard.opendata.platform.domain.model.opendata.tokyo.TokyoOpenData;
 import com.dxjunkyard.opendata.platform.domain.model.search.CategoryNameToIdConverter;
 import com.dxjunkyard.opendata.platform.domain.model.search.OrganizationNameToIdConverter;
 import com.dxjunkyard.opendata.platform.domain.model.search.Prefecture;
@@ -10,6 +9,7 @@ import com.dxjunkyard.opendata.platform.domain.model.search.condition.KeywordSea
 import com.dxjunkyard.opendata.platform.domain.model.search.condition.OrganizationSearchCondition;
 import com.dxjunkyard.opendata.platform.domain.model.search.condition.SearchCondition;
 import com.dxjunkyard.opendata.platform.domain.service.FilterDatasetFileDomainService;
+import com.dxjunkyard.opendata.platform.domain.service.RomajiConverterDomainService;
 import com.dxjunkyard.opendata.platform.domain.service.UrlBuilderDomainService;
 import com.dxjunkyard.opendata.platform.presentation.dto.request.OpenDataSearcherRequest;
 import com.dxjunkyard.opendata.platform.presentation.dto.response.*;
@@ -30,6 +30,8 @@ public class OpenDataSearcherFactory {
     private final OrganizationNameToIdConverter organizationNameToIdConverter;
 
     private final CategoryNameToIdConverter categoryNameToIdConverter;
+
+    private final RomajiConverterDomainService romajiConverterDomainService;
 
     @NonNull
     public SearchCondition build(final OpenDataSearcherRequest request) {
@@ -60,25 +62,21 @@ public class OpenDataSearcherFactory {
 
     @NonNull
     public OpenDataSearcherResponse build(final OpenData openData, final SearchCondition searchCondition) {
-        if (openData instanceof TokyoOpenData tokyoOpenData) {
-            final List<DatasetResponse> datasetResponse = tokyoOpenData.getDataset().stream()
-                .map(dataset -> {
-                    final var datasetFileResponse = filterDatasetFileDomainService.filter(dataset.getFiles(), searchCondition)
-                        .stream()
-                        .map(DatasetFileResponse::from)
-                        .toList();
+        final List<DatasetResponse> datasetResponse = openData.getDataset().stream()
+            .map(dataset -> {
+                final var datasetFileResponse = filterDatasetFileDomainService.filter(dataset.getFiles(), searchCondition)
+                    .stream()
+                    .map(DatasetFileResponse::from)
+                    .toList();
 
-                    return DatasetResponse.from(dataset, datasetFileResponse);
-                }).toList();
+                return DatasetResponse.from(dataset, datasetFileResponse, romajiConverterDomainService.convert(dataset.getTitle()));
+            }).toList();
 
-            return OpenDataSearcherResponse.builder()
-                .searchResultInfo(new SearchResultInfoResponse(tokyoOpenData.getTotal()))
-                .dataset(datasetResponse)
-                .searchCondition(SearchConditionResponse.from(searchCondition))
-                .showMoreUrl(urlBuilderDomainService.build(searchCondition))
-                .build();
-        }
-
-        return OpenDataSearcherResponse.empty();
+        return OpenDataSearcherResponse.builder()
+            .searchResultInfo(new SearchResultInfoResponse(openData.getTotal()))
+            .dataset(datasetResponse)
+            .searchCondition(SearchConditionResponse.from(searchCondition))
+            .showMoreUrl(urlBuilderDomainService.build(searchCondition))
+            .build();
     }
 }
