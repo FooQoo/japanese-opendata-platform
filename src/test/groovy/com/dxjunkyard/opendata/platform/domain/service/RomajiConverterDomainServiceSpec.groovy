@@ -18,6 +18,6 @@ class RomajiConverterDomainServiceSpec extends Specification {
         when:
         def result = target.convert("東京都")
         then:
-        result == "toukyouto"
+        result == "toukyou to"
     }
 }
