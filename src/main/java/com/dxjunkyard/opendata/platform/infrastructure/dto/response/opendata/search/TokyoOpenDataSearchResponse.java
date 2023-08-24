@@ -1,9 +1,8 @@
 package com.dxjunkyard.opendata.platform.infrastructure.dto.response.opendata.search;
 
+import com.dxjunkyard.opendata.platform.domain.model.opendata.Dataset;
 import com.dxjunkyard.opendata.platform.domain.model.opendata.DatasetFile;
-import com.dxjunkyard.opendata.platform.domain.model.opendata.tokyo.TokyoDataset;
-import com.dxjunkyard.opendata.platform.domain.model.opendata.tokyo.TokyoDatasetFile;
-import com.dxjunkyard.opendata.platform.domain.model.opendata.tokyo.TokyoOpenData;
+import com.dxjunkyard.opendata.platform.domain.model.opendata.OpenData;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -22,8 +21,8 @@ public record TokyoOpenDataSearchResponse(
 ) implements OpenDataSearchResponse {
 
     @NonNull
-    public TokyoOpenData toTokyoOpenData() {
-        return TokyoOpenData.builder()
+    public OpenData toTokyoOpenData() {
+        return OpenData.builder()
             .total(result.count())
             .dataset(result.toTokyoDataset())
             .build();
@@ -35,7 +34,7 @@ public record TokyoOpenDataSearchResponse(
         Integer count,
         List<ResultResponse> results
     ) {
-        public List<TokyoDataset> toTokyoDataset() {
+        public List<Dataset> toTokyoDataset() {
             return results.stream()
                 .map(ResultResponse::toDataset)
                 .toList();
@@ -67,8 +66,8 @@ public record TokyoOpenDataSearchResponse(
         }
 
         @NonNull
-        public TokyoDataset toDataset() {
-            return TokyoDataset.builder()
+        public Dataset toDataset() {
+            return Dataset.builder()
                 .title(title)
                 .description(notes)
                 .datasetUrl(Optional.ofNullable(url).filter(StringUtils::isNotBlank).orElse(null))
@@ -93,8 +92,8 @@ public record TokyoOpenDataSearchResponse(
         String created
     ) {
 
-        public TokyoDatasetFile toDatasetFile() {
-            return TokyoDatasetFile.builder()
+        public DatasetFile toDatasetFile() {
+            return DatasetFile.builder()
                 .title(name)
                 .description(description)
                 .format(format)
