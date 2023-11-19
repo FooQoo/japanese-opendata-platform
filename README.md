@@ -6,7 +6,7 @@
     <p><a href="https://catalog.data.metro.tokyo.lg.jp/dataset">東京都オープンデータカタログサイト</a>に掲載されているオープンデータを検索できるChatGPT Pluginです</p>
 </div>
 
-[![codecov](https://codecov.io/gh/FooQoo/tokyo-opendata-chatgpt-plugin/graph/badge.svg?token=WiSR2OR7wn)](https://codecov.io/gh/FooQoo/tokyo-opendata-chatgpt-plugin)
+[![codecov](https://codecov.io/gh/dx-junkyard/tokyo-opendata-chatgpt-plugin/graph/badge.svg?token=WiSR2OR7wn)](https://codecov.io/gh/dx-junkyard/tokyo-opendata-chatgpt-plugin)
 
 ## ChatGPT Plugin とは？
 
