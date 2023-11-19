@@ -1,4 +1,4 @@
-# Japan OpenData Privacy Policy
+# Tokyo OpenData Privacy Policy
 
 ## User Information to be Acquired
 
